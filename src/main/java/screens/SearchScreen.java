@@ -13,9 +13,16 @@ public class SearchScreen extends BaseScreen {
     AndroidElement btnDots;
     @FindBy(xpath = "//*[@text='Registration' and @resource-id='com.telran.ilcarro:id/title']")
     AndroidElement btnRegistration;
+    @FindBy(xpath = "//*[@text='Login' and @resource-id='com.telran.ilcarro:id/title']")
+    AndroidElement btnLogin;
+    @FindBy(xpath = "//*[@text='My Cars' and @resource-id='com.telran.ilcarro:id/title']")
+    AndroidElement btnMyCars;
     @FindBy(xpath = "//hierarchy/android.widget.Toast")
     AndroidElement popUpMessageSuccess;
 
+    public void clickBtnMyCars() {
+        clickWait(btnMyCars, 3);
+    }
 
     public void clickBtnDots() {
         clickWait(btnDots, 5);
@@ -25,7 +32,11 @@ public class SearchScreen extends BaseScreen {
         clickWait(btnRegistration, 3);
     }
 
-    public boolean textInElementPresent_popUpMessageSuccess(String text){
+    public void clickBtnLogin() {
+        clickWait(btnLogin, 3);
+    }
+
+    public boolean textInElementPresent_popUpMessageSuccess(String text) {
         return textInElementPresent(popUpMessageSuccess, text, 3);
     }
 }

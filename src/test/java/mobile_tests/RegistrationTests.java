@@ -59,4 +59,27 @@ public class RegistrationTests extends AppiumConfig {
                         ("username=must be a " +
                                 "well-formed email address"));
     }
+
+    @Test
+    public void registrationNegativeTest_WOCheckBox(){
+        int i= new Random().nextInt(1000);
+        RegistrationBodyDto user = RegistrationBodyDto.builder()
+                .firstName(i+"Pavel")
+                .lastName(i+"Pavlov")
+                .username("pavel"+i+"pavlov@gmail.com")
+                .password("AAaa123!").build();
+
+        System.out.println(user.toString());
+        new SplashScreen(driver).goToSearchScreen(5);
+        SearchScreen searchScreen = new SearchScreen(driver);
+        searchScreen.clickBtnDots();
+        searchScreen.clickBtnRegistration();
+        RegistrationScreen registrationScreen = new RegistrationScreen(driver);
+        registrationScreen.typeRegistrationForm(user);
+        registrationScreen.clickBtnYalla();
+
+        Assert.assertTrue(new ErrorScreen(driver)
+                .validateErrorMessage
+                        ("All fields must be filled and agree terms"));
+    }
 }
