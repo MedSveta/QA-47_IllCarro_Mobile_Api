@@ -12,7 +12,14 @@ public class MyCarsScreen extends BaseScreen{
     @FindBy(id = "com.telran.ilcarro:id/addCarBtn")
     AndroidElement btnAddNewCar;
 
+    @FindBy(xpath = "//hierarchy/android.widget.Toast")
+    AndroidElement popUpMessageSuccess;
+
     public void clickBtnAddNewCar(){
         clickWait(btnAddNewCar, 3);
+    }
+
+    public boolean textInElementPresent_popUpMessageSuccess(String text) {
+        return textInElementPresent(popUpMessageSuccess, text, 3);
     }
 }
