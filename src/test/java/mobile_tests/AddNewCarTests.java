@@ -2,6 +2,7 @@ package mobile_tests;
 
 import config.AppiumConfig;
 import dto.CarDto;
+import dto.ErrorMessageDtoString;
 import dto.RegistrationBodyDto;
 import org.openqa.selenium.support.FindBy;
 import org.testng.Assert;
@@ -52,5 +53,145 @@ public class AddNewCarTests extends AppiumConfig {
         addNewCarScreen.clickBtnAddCar();
         Assert.assertTrue(new MyCarsScreen(driver)
                 .textInElementPresent_popUpMessageSuccess("Car was added!"));
+    }
+
+    @Test
+    public void addNewCarNegativeTest_WrongSerialNumber() {
+        CarDto car = CarDto.builder()
+                .serialNumber("001-1724")
+                .manufacture("Mazda")
+                .model("CX5")
+                .city("Haifa")
+                .pricePerDay(34.5)
+                .carClass("a")
+                .fuel("Diesel")
+                .year("2023")
+                .seats(4)
+                .build();
+
+        SearchScreen searchScreen = new SearchScreen(driver);
+        searchScreen.clickBtnDots();
+        searchScreen.clickBtnMyCars();
+        MyCarsScreen myCarsScreen = new MyCarsScreen(driver);
+        myCarsScreen.clickBtnAddNewCar();
+        AddNewCarScreen addNewCarScreen = new AddNewCarScreen(driver);
+        addNewCarScreen.typeAddNewCarForm(car);
+        addNewCarScreen.clickBtnAddCar();
+
+        Assert.assertTrue(new ErrorScreen(driver)
+                .validateErrorMessage("Car with serial number 001-1724 already exists"));
+    }
+
+    @Test
+    public void addNewCarNegativeTest_AllFieldsEmpty() {
+        CarDto car = CarDto.builder()
+                .serialNumber("")
+                .manufacture("")
+                .model("")
+                .city("")
+                .pricePerDay(0.)
+                .carClass("")
+                .fuel("")
+                .year("")
+                .seats(0)
+                .build();
+
+        SearchScreen searchScreen = new SearchScreen(driver);
+        searchScreen.clickBtnDots();
+        searchScreen.clickBtnMyCars();
+        MyCarsScreen myCarsScreen = new MyCarsScreen(driver);
+        myCarsScreen.clickBtnAddNewCar();
+        AddNewCarScreen addNewCarScreen = new AddNewCarScreen(driver);
+        addNewCarScreen.typeAddNewCarForm(car);
+        addNewCarScreen.clickBtnAddCar();
+
+        Assert.assertTrue(new ErrorScreen(driver)
+                .validateErrorMessage("Fields: " +
+                        "Serial number, Manufacture, Model, City, Price per day is required!"));
+    }
+
+    @Test
+    public void addNewCarNegativeTest_EmptyFieldManufacture() {
+        int i = new Random().nextInt(1000)+1000;
+        CarDto car = CarDto.builder()
+                .serialNumber("001-"+i)
+                .manufacture("")
+                .model("CX5")
+                .city("Haifa")
+                .pricePerDay(34.5)
+                .carClass("a")
+                .fuel("Diesel")
+                .year("2023")
+                .seats(4)
+                .build();
+
+        SearchScreen searchScreen = new SearchScreen(driver);
+        searchScreen.clickBtnDots();
+        searchScreen.clickBtnMyCars();
+        MyCarsScreen myCarsScreen = new MyCarsScreen(driver);
+        myCarsScreen.clickBtnAddNewCar();
+        AddNewCarScreen addNewCarScreen = new AddNewCarScreen(driver);
+        addNewCarScreen.typeAddNewCarForm(car);
+        addNewCarScreen.clickBtnAddCar();
+
+        Assert.assertTrue(new ErrorScreen(driver)
+                .validateErrorMessage("Fields: Serial number, Manufacture, " +
+                        "Model, City, Price per day is required!"));
+    }
+
+    @Test
+    public void addNewCarNegativeTest_WrongFieldYear() {
+        int i = new Random().nextInt(1000)+1000;
+        CarDto car = CarDto.builder()
+                .serialNumber("001-"+i)
+                .manufacture("Mazda")
+                .model("CX5")
+                .city("Haifa")
+                .pricePerDay(34.5)
+                .carClass("a")
+                .fuel("Diesel")
+                .year("-1")
+                .seats(4)
+                .build();
+
+        SearchScreen searchScreen = new SearchScreen(driver);
+        searchScreen.clickBtnDots();
+        searchScreen.clickBtnMyCars();
+        MyCarsScreen myCarsScreen = new MyCarsScreen(driver);
+        myCarsScreen.clickBtnAddNewCar();
+        AddNewCarScreen addNewCarScreen = new AddNewCarScreen(driver);
+        addNewCarScreen.typeAddNewCarForm(car);
+        addNewCarScreen.clickBtnAddCar();
+
+        Assert.assertTrue(new ErrorScreen(driver)
+                .validateErrorMessage("Fields: Serial number, Manufacture, " +
+                        "Model, City, Price per day is required!"));
+    }
+    @Test
+    public void addNewCarNegativeTest_WrongFieldCity() {
+        int i = new Random().nextInt(1000)+1000;
+        CarDto car = CarDto.builder()
+                .serialNumber("001-"+i)
+                .manufacture("Mazda")
+                .model("CX5")
+                .city("Oiuyn")
+                .pricePerDay(34.5)
+                .carClass("a")
+                .fuel("Diesel")
+                .year("2023")
+                .seats(4)
+                .build();
+
+        SearchScreen searchScreen = new SearchScreen(driver);
+        searchScreen.clickBtnDots();
+        searchScreen.clickBtnMyCars();
+        MyCarsScreen myCarsScreen = new MyCarsScreen(driver);
+        myCarsScreen.clickBtnAddNewCar();
+        AddNewCarScreen addNewCarScreen = new AddNewCarScreen(driver);
+        addNewCarScreen.typeAddNewCarForm(car);
+        addNewCarScreen.clickBtnAddCar();
+
+        Assert.assertTrue(new ErrorScreen(driver)
+                .validateErrorMessage("City Oiuyn not available"));
     }
 }
