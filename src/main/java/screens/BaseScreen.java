@@ -27,6 +27,7 @@ public class BaseScreen {
                 .textToBePresentInElement(element, text));
     }
 
+
     public void pause(int time){
         try {
             Thread.sleep(time*1000L);
